@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Priority, Todo } from "../lib/todo";
 import PrioritySelect from "./PrioritySelect";
 
@@ -15,7 +15,7 @@ interface TodoItemProps {
   onDragEnd: () => void;
 }
 
-export default function TodoItem({
+const TodoItem = memo(function TodoItem({
   todo,
   index,
   isDragging,
@@ -29,6 +29,14 @@ export default function TodoItem({
 }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(todo.text);
+  const editInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isEditing) {
+      editInputRef.current?.focus();
+      editInputRef.current?.select();
+    }
+  }, [isEditing]);
 
   const priorityStyles = {
     high: "border-l-4 border-red-500 bg-red-50",
@@ -94,6 +102,7 @@ export default function TodoItem({
 
         {isEditing ? (
           <input
+            ref={editInputRef}
             type="text"
             value={editedText}
             onChange={(e) => setEditedText(e.target.value)}
@@ -127,4 +136,6 @@ export default function TodoItem({
       </div>
     </div>
   );
-}
+});
+
+export default TodoItem;

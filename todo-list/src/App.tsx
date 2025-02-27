@@ -1,101 +1,72 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import TodoInput from "./components/TodoInput";
-import { FilterStatus, Priority, sortTodos, Todo } from "./lib/todo";
+import { FilterStatus, sortTodos } from "./lib/todo";
 import TodoItem from "./components/TodoItem";
 import TodoFilter from "./components/TodoFilter";
 import TodoStats from "./components/TodoStats";
 import TodoSort from "./components/TodoSort";
+import useTodos from "./hooks/useTodos";
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>(() => {
-    const savedTodos = localStorage.getItem("todos");
-    return savedTodos ? JSON.parse(savedTodos) : [];
-  });
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-
-  const handleDragStart = (index: number) => {
-    setDraggedIndex(index);
-  };
-
-  const handleDragOver = (e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    if (draggedIndex === null || draggedIndex === index) return;
-
-    setTodos((prev) => {
-      const newTodos = [...prev];
-      const [draggedTodo] = newTodos.splice(draggedIndex, 1);
-      newTodos.splice(index, 0, draggedTodo);
-      setDraggedIndex(index); // 更新拖拽项的索引
-      return newTodos;
-    });
-  };
-
-  const handleDragEnd = () => {
-    setDraggedIndex(null);
-  };
-
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
-
-  const addTodo = (text: string, priority: Priority) => {
-    const newTodo: Todo = {
-      id: Date.now().toString(),
-      text,
-      completed: false,
-      priority,
-    };
-    setTodos([...todos, newTodo]);
-  };
-
-  const changePriority = (id: string, priority: Priority) => {
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, priority } : todo))
-    );
-  };
-
-  const toggleTodo = (id: string) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  };
-
-  const deleteTodo = (id: string) => {
-    setTodos(todos.filter((t) => t.id !== id));
-  };
-
-  const clearCompleted = () => {
-    setTodos(todos.filter((t) => !t.completed));
-  };
-
   const [filter, setFilter] = useState<FilterStatus>("all");
   const [sortBy, setSortBy] = useState<"priority" | "none">("none"); // 新增
-  // 先过滤，再排序
-  const processedTodos = sortTodos(
-    todos.filter((todo) => {
-      switch (filter) {
-        case "active":
-          return !todo.completed;
-        case "completed":
-          return todo.completed;
-        default:
-          return true;
-      }
-    }),
-    sortBy
-  );
+  const {
+    todos,
+    draggedIndex,
+    addTodo,
+    toggleTodo,
+    handleDragStart,
+    handleDragOver,
+    handleDragEnd,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    clearCompleted,
+    deleteTodo,
+    editTodo,
+    changePriority,
+  } = useTodos();
 
-  const editTodo = (id: string, text: string) => {
-    setTodos(todos.map((todo) => (todo.id === id ? { ...todo, text } : todo)));
-  };
+  const processedTodos = useMemo(() => {
+    return sortTodos(
+      todos.filter((todo) => {
+        if (filter === "all") return true;
+        if (filter === "active") return !todo.completed;
+        if (filter === "completed") return todo.completed;
+        return false;
+      }),
+      sortBy
+    );
+  }, [todos, filter, sortBy]);
 
   return (
-    <div className="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-xl shadow-lg">
-      <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        Todo List
-      </h1>
+    <div className="max-w-2xl h-[80vh] mt-4 overflow-auto mx-auto p-6 bg-white rounded-xl shadow-lg">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-center text-gray-800">
+          Todo List {draggedIndex}
+        </h1>
+        <div className="space-x-2">
+          {canUndo && (
+            <button
+              onClick={undo}
+              className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+              title="撤销"
+            >
+              ↩️ 撤销
+            </button>
+          )}
+          {canRedo && (
+            <button
+              onClick={redo}
+              className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+              title="重做"
+            >
+              ↪️ 重做
+            </button>
+          )}
+        </div>
+      </div>
       <TodoStats todos={todos} onClearCompleted={clearCompleted} />
       <TodoInput onSubmit={addTodo} />
       <div className="flex justify-between items-center my-4">
