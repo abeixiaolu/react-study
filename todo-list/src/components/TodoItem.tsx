@@ -4,21 +4,37 @@ import PrioritySelect from "./PrioritySelect";
 
 interface TodoItemProps {
   todo: Todo;
+  index: number;
+  isDragging: boolean;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
   onEdit: (id: string, text: string) => void;
   onPriorityChange: (id: string, priority: Priority) => void;
+  onDragStart: (index: number) => void;
+  onDragOver: (e: React.DragEvent, index: number) => void;
+  onDragEnd: () => void;
 }
 
 export default function TodoItem({
   todo,
+  index,
+  isDragging,
   onToggle,
   onDelete,
   onEdit,
   onPriorityChange,
+  onDragStart,
+  onDragOver,
+  onDragEnd,
 }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(todo.text);
+
+  const priorityStyles = {
+    high: "border-l-4 border-red-500 bg-red-50",
+    medium: "border-l-4 border-yellow-500 bg-yellow-50",
+    low: "border-l-4 border-green-500 bg-green-50",
+  };
 
   const handleSubmit = () => {
     const trimmedText = editedText.trim();
@@ -40,8 +56,35 @@ export default function TodoItem({
   };
 
   return (
-    <div className="flex items-center gap-2 justify-between">
+    <div
+      draggable
+      onDragStart={() => onDragStart(index)}
+      onDragEnd={onDragEnd}
+      onDragOver={(e) => onDragOver(e, index)}
+      className={`
+      flex items-center gap-2 justify-between text-gray-800 p-4
+      transition-all duration-200 ease-in-out
+      ${priorityStyles[todo.priority]}
+      ${isDragging ? "opacity-50 scale-105 shadow-lg" : "opacity-100"}
+      ${!isDragging && "hover:shadow-md transform hover:-translate-y-0.5"}
+      cursor-move rounded-lg
+    `}
+    >
       <div className="flex items-center gap-2">
+        <svg
+          className="w-5 h-5 text-gray-400 cursor-move"
+          fill="none"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3 6h18M3 12h18M3 18h18"
+          />
+        </svg>
+
         <input
           type="checkbox"
           checked={todo.completed}

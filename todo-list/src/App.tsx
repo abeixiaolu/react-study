@@ -11,6 +11,28 @@ function App() {
     const savedTodos = localStorage.getItem("todos");
     return savedTodos ? JSON.parse(savedTodos) : [];
   });
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (draggedIndex === null || draggedIndex === index) return;
+
+    setTodos((prev) => {
+      const newTodos = [...prev];
+      const [draggedTodo] = newTodos.splice(draggedIndex, 1);
+      newTodos.splice(index, 0, draggedTodo);
+      setDraggedIndex(index); // 更新拖拽项的索引
+      return newTodos;
+    });
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+  };
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -81,14 +103,19 @@ function App() {
         <TodoSort sortBy={sortBy} onSortChange={setSortBy} />
       </div>
       <div className="space-y-2">
-        {processedTodos.map((todo) => (
+        {processedTodos.map((todo, index) => (
           <TodoItem
+            index={index}
             key={todo.id}
             todo={todo}
             onToggle={toggleTodo}
             onDelete={deleteTodo}
             onEdit={editTodo}
             onPriorityChange={changePriority}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragEnd={handleDragEnd}
+            isDragging={draggedIndex === index}
           />
         ))}
       </div>
