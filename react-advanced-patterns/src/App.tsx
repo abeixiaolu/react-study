@@ -1,4 +1,5 @@
 import { CompoundComponentsDemo } from "./pages/CompoundComponentsDemo";
+import { HOCPatternsDemo } from "./pages/HOCPatternsDemo";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       </header>
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <CompoundComponentsDemo />
+        <HOCPatternsDemo />
       </main>
     </div>
   );
