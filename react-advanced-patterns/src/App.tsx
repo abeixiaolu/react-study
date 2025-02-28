@@ -2,6 +2,7 @@ import { CompoundComponentsDemo } from "./pages/CompoundComponentsDemo";
 import { CompoundComponentsTabsDemo } from "./pages/CompoundComponentsTabsDemo";
 import { HOCPatternsDemo } from "./pages/HOCPatternsDemo";
 import { RenderPropsDemo } from "./pages/RenderPropsDemo";
+import { PerformanceOptimizationDemo } from "./pages/PerformanceOptimizationDemo";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <HOCPatternsDemo />
         <RenderPropsDemo />
         <CompoundComponentsTabsDemo />
+        <PerformanceOptimizationDemo />
       </main>
     </div>
   );

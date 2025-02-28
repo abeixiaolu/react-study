@@ -38,11 +38,11 @@
   - [x] 组件组合（Composition）
   - [x] 高阶组件（HOC）
   - [x] Render Props 模式
-  - [ ] Compound Components（复合组件）
+  - [x] Compound Components（复合组件）
 3. 性能优化
   - [x] React.memo 避免不必要的重渲染
-  - [ ] 懒加载（React.lazy）和代码分割
-  - [ ] 虚拟列表处理大数据
+  - [x] 懒加载（React.lazy）和代码分割
+  - [x] 虚拟列表处理大数据
 4. 状态管理优化
   - [ ] 副作用处理
   - [ ] useEffect 的清理函数
