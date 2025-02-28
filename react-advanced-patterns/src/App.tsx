@@ -3,6 +3,8 @@ import { CompoundComponentsTabsDemo } from "./pages/CompoundComponentsTabsDemo";
 import { HOCPatternsDemo } from "./pages/HOCPatternsDemo";
 import { RenderPropsDemo } from "./pages/RenderPropsDemo";
 import { PerformanceOptimizationDemo } from "./pages/PerformanceOptimizationDemo";
+import { DataFetchingDemo } from "./pages/DataFetchingDemo";
+import { EventListenerDemo } from "./pages/EventListenerDemo";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <RenderPropsDemo />
         <CompoundComponentsTabsDemo />
         <PerformanceOptimizationDemo />
+        <DataFetchingDemo />
+        <EventListenerDemo />
       </main>
     </div>
   );
