@@ -37,7 +37,7 @@
 2. 组件设计模式
   - [x] 组件组合（Composition）
   - [x] 高阶组件（HOC）
-  - [ ] Render Props 模式
+  - [x] Render Props 模式
   - [ ] Compound Components（复合组件）
 3. 性能优化
   - [x] React.memo 避免不必要的重渲染

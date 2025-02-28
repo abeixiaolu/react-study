@@ -1,4 +1,5 @@
 import { CompoundComponentsDemo } from "./pages/CompoundComponentsDemo";
+import { CompoundComponentsTabsDemo } from "./pages/CompoundComponentsTabsDemo";
 import { HOCPatternsDemo } from "./pages/HOCPatternsDemo";
 import { RenderPropsDemo } from "./pages/RenderPropsDemo";
 
@@ -16,6 +17,7 @@ function App() {
         <CompoundComponentsDemo />
         <HOCPatternsDemo />
         <RenderPropsDemo />
+        <CompoundComponentsTabsDemo />
       </main>
     </div>
   );
