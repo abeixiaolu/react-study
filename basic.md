@@ -30,29 +30,29 @@
 先带我做一个待办任务的项目学习 react 基础、路由、状态管理，项目创建在 ./todo-list 文件夹下。
 
 1. React Hooks 进阶
-  - useCallback 和 useMemo 用于性能优化
-  - useRef 处理 DOM 操作和保存值
-  - 自定义 Hook 封装可复用逻辑
-  - useReducer 处理复杂状态逻辑
+  - [x] useCallback 和 useMemo 用于性能优化
+  - [x] useRef 处理 DOM 操作和保存值
+  - [x] 自定义 Hook 封装可复用逻辑
+  - [x] useReducer 处理复杂状态逻辑
 2. 组件设计模式
-  - 组件组合（Composition）
-  - 高阶组件（HOC）
-  - Render Props 模式
-  - Compound Components（复合组件）
+  - [x] 组件组合（Composition）
+  - [x] 高阶组件（HOC）
+  - [ ] Render Props 模式
+  - [ ] Compound Components（复合组件）
 3. 性能优化
-  - React.memo 避免不必要的重渲染
-  - 懒加载（React.lazy）和代码分割
-  - 虚拟列表处理大数据
+  - [x] React.memo 避免不必要的重渲染
+  - [ ] 懒加载（React.lazy）和代码分割
+  - [ ] 虚拟列表处理大数据
 4. 状态管理优化
-  - 副作用处理
-  - useEffect 的清理函数
-  - 异步操作处理
-  - 数据获取最佳实践
-  - 事件监听和解绑
+  - [ ] 副作用处理
+  - [ ] useEffect 的清理函数
+  - [ ] 异步操作处理
+  - [ ] 数据获取最佳实践
+  - [ ] 事件监听和解绑
 5. Context API 进阶
-  - Context 性能优化
-  - 多 Context 组合
-  - Context + useReducer 实现状态管理
+  - [ ] Context 性能优化
+  - [ ] 多 Context 组合
+  - [ ] Context + useReducer 实现状态管理
 
 
 之后再做这个电子商务网站。
