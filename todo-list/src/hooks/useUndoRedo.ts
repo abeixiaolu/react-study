@@ -2,14 +2,12 @@ import { useCallback, useRef, useState } from "react";
 
 interface History<T> {
   past: T[];
-  present: T;
   future: T[];
 }
 
 function useUndoRedo<T>(initialPresent: T) {
   const historyRef = useRef<History<T>>({
     past: [],
-    present: initialPresent,
     future: [],
   });
 
@@ -18,17 +16,19 @@ function useUndoRedo<T>(initialPresent: T) {
   const canUndo = historyRef.current.past.length > 0;
   const canRedo = historyRef.current.future.length > 0;
 
-  const updatePresent = useCallback((newPresent: T) => {
-    historyRef.current = {
-      past: [...historyRef.current.past, historyRef.current.present],
-      present: newPresent,
-      future: [],
-    };
-    setPresent(newPresent);
-  }, []);
+  const updatePresent = useCallback(
+    (newPresent: T) => {
+      historyRef.current = {
+        past: [...historyRef.current.past, present],
+        future: [],
+      };
+      setPresent(newPresent);
+    },
+    [present]
+  );
 
   const undo = useCallback(() => {
-    const { past, present, future } = historyRef.current;
+    const { past, future } = historyRef.current;
 
     if (past.length === 0) return present;
 
@@ -37,14 +37,13 @@ function useUndoRedo<T>(initialPresent: T) {
 
     historyRef.current = {
       past: newPast,
-      present: previous,
       future: [present, ...future],
     };
     setPresent(previous);
-  }, []);
+  }, [present]);
 
   const redo = useCallback(() => {
-    const { past, present, future } = historyRef.current;
+    const { past, future } = historyRef.current;
 
     if (future.length === 0) return present;
 
@@ -53,12 +52,11 @@ function useUndoRedo<T>(initialPresent: T) {
 
     historyRef.current = {
       past: [...past, present],
-      present: next,
       future: newFuture,
     };
 
     setPresent(next);
-  }, []);
+  }, [present]);
 
   return {
     present,
